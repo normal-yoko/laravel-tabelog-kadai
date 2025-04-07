@@ -12,14 +12,16 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {
+           
             $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->rememberToken();
+            $table->string('name'); //名前
+            $table->string('email')->unique(); //email
+            $table->string('password'); //パスワード
+            $table->string('postal_code')->default('');  //郵便番号
+            $table->string('address');  //住所
+            $table->string('phone')->default('');  //電話番号
             $table->timestamps();
-        });
+      });
     }
 
     /**
@@ -30,3 +32,15 @@ return new class extends Migration
         Schema::dropIfExists('users');
     }
 };
+
+
+/*
+            $table->id();
+            $table->string('name');
+            $table->string('email')->unique();
+            $table->timestamp('email_verified_at')->nullable();
+            $table->string('password');
+            $table->rememberToken();
+            $table->timestamps();
+
+*/
