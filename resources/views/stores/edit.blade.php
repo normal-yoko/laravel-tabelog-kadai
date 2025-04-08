@@ -1,3 +1,7 @@
+@extends('layouts.app')
+
+@section('content')
+
 <div>
    <h2>店舗編集</h2>
 </div>
@@ -63,3 +67,4 @@
    </div>
 
 </form>
+@endsection
