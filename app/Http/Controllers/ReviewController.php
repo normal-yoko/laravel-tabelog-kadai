@@ -33,10 +33,10 @@ class ReviewController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Store $store)
+    public function show(Request $request)
     {
-        $reviews = $store->reviews()->get();
- 
+//        $reviews = $store->reviews()->get();
+//        $reviews = Review::where(リクエストからstore_idを取得)
         return view('reviews.show', compact('reviews'));
     }
 
