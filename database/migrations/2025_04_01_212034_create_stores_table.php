@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('stores', function (Blueprint $table) {
             $table->id();
+
             $table->foreignId('category_id')->constrained()->cascadeOnDelete(); //$table->integer('category_id')->unsigned(); 
 
             $table->string('name');  //店名

@@ -20,6 +20,8 @@ class Store extends Model
 
     }
 
-
-
+    public function favorited_users()
+    {
+        return $this->belongsToMany(User::class)->withTimestamps();
+    }
 }

@@ -3,12 +3,21 @@
 namespace App\Http\Controllers;
 
 use App\Models\Review;
+use App\Models\Store;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 class ReviewController extends Controller
 {
+
+    public function index(Store $store)
+    {
+//        $reviews = $store->reviews()->get();
+        $reviews = $Store->reviews()-get();
+
+        return view('reviews.index', compact('reviews'));
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -33,11 +42,15 @@ class ReviewController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Request $request)
+    public function show($id)
     {
 //        $reviews = $store->reviews()->get();
-//        $reviews = Review::where(リクエストからstore_idを取得)
-        return view('reviews.show', compact('reviews'));
+//        $reviews = $store->reviews()->get();
+//            $reviews = Review::where("store_id",$id);
+//            $reviews = Review::find(1);
+        $reviews = Review::all();
+        
+        return view('reviews.show', compact('id','reviews'));
     }
 
     /**

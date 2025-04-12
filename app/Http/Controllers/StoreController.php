@@ -15,7 +15,10 @@ class StoreController extends Controller
     public function index()
     {
         //外部キーを使ってCategoryテーブルを連結したStoreテーブルを全件取得☆彡
-        $stores = Store::with('category')->get();
+        
+//        $stores = Store::where('name',$request->input('keyword')::pagenate(9));
+
+      $stores = Store::paginate(8);
 
         return view('stores.index', compact('stores'));
     }
@@ -137,4 +140,5 @@ class StoreController extends Controller
  
         return to_route('stores.index');
     }
+
 }
