@@ -4,9 +4,9 @@
 <div class="container pt-5">
    <div class="row justify-content-center">
        <div class="col-xl-9">
-           <h1 class="mb-5">ご注文内容</h1>
+           <h1 class="mb-5">ご予約内容</h1>
 
-           <h5 class="fw-bold mb-3">購入商品</h5>
+           <h5 class="fw-bold mb-3">予約店舗</h5>
 
            <div class="row justify-content-between">
                <div class="col-lg-7">
@@ -15,7 +15,7 @@
                    <div class="mb-5">
                        @if ($cart->isEmpty())
                            <div class="row">
-                               <p class="mb-0">カートの中身は空です。</p>
+                               <p class="mb-0">ご予約内容をご確認ください。</p>
                            </div>
                        @else
                            @foreach ($cart as $product)
@@ -36,7 +36,7 @@
                                            </p>
                                            <div class="row mb-2">
                                                <div class="col-xxl-3">
-                                                   数量：{{ number_format($product->qty) }}
+                                                   人数：{{ number_format($product->qty) }}
                                                </div>
                                                <div class="col-xxl-9">
                                                    合計：￥{{ number_format($product->qty * $product->price) }}
@@ -59,7 +59,7 @@
                                ￥{{ number_format($total - $carriage_cost) }}
                            </div>
                        </div>
-
+<!--
                        <div class="row mb-3">
                            <div class="col-md-5">
                                送料
@@ -68,7 +68,7 @@
                                ￥{{ number_format($carriage_cost) }}
                            </div>
                        </div>
-
+-->
                        <div class="row">
                            <div class="col-5">
                                <span class="fs-5 fw-bold">合計</span>

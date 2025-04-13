@@ -16,7 +16,7 @@ class ReviewController extends Controller
         $store = Store::find($id);
         $reviews = $store->reviews()->get();
 
-        return view('reviews.index', compact('reviews'));
+        return view('reviews.index', compact('store','reviews'));
     }
 
     /**

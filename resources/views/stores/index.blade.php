@@ -19,7 +19,6 @@
         <button type="submit" class="serch_button" >検索</button>
   </div>
 </form>
-</form>
     <div class="container mt-4">
         <div class="row w-100">
             @foreach($stores as $store)

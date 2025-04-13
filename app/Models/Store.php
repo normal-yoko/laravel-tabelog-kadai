@@ -24,4 +24,11 @@ class Store extends Model
     {
         return $this->belongsToMany(User::class)->withTimestamps();
     }
+
+    public function reserves()
+    {
+            return $this->hasMany(Reserve::class);
+
+    }
+
 }

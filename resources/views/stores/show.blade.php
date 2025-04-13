@@ -63,6 +63,11 @@
     <div>
         <a href="{{ route('reviews.index',$store->id) }}">レビューをみる</a>
     </div>
+
+    @if (  Auth::user()->paid_flg == 1)
+    <div>
+        <a href="{{ route('reserves.index',$store->id) }}">予約</a>
+    </div>    
     <div class="col-5">
         @if(Auth::user()->favorite_stores()->where('store_id', $store->id)->exists())
             <a href="{{ route('favorites.destroy', $store->id) }}" class="btn laravel-tabelog-kadai-favorite-button text-favorite w-100" onclick="event.preventDefault(); document.getElementById('favorites-destroy-form').submit();">
@@ -72,10 +77,11 @@
         @else
             <a href="{{ route('favorites.store', $store->id) }}" class="btn laravel-tabelog-kadai-favorite-button2 text-favorite w-100" onclick="event.preventDefault(); document.getElementById('favorites-store-form').submit();">
                 <i class="fa fa-heart"></i>
-                お気に入り
+                お気に入り登録
             </a>
         @endif
     </div>
+    @endif
 
 </form>
 <form id="favorites-destroy-form" action="{{ route('favorites.destroy', $store->id) }}" method="POST" class="d-none">

@@ -19,58 +19,56 @@
 -->
        <div class="collapse navbar-collapse" id="navbarSupportedContent">
            <ul class="navbar-nav ms-auto mr-5 mt-2">
-               @guest
-                   <li class="nav-item mr-5">
-                       <a class="nav-link" href="{{ route('register') }}">登録</a>
-                   </li>
-                   <li class="nav-item mr-5">
-                       <a class="nav-link" href="{{ route('login') }}">ログイン</a>
-                   </li>
-                   <hr>
-                   <li class="nav-item mr-5">
-                       <a class="nav-link" href="{{ route('login') }}"><i class="far fa-heart"></i></a>
-                   </li>
-                   <li class="nav-item mr-5">
-                       <a class="nav-link" href="{{ route('login') }}"><i class="fas fa-shopping-cart"></i></a>
-                   </li>
 
-               @else
-                  <li class="nav-item mr-5">
-                       <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                           予約一覧
+           @guest
+                @if (Route::has('login'))
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('login') }}">ログイン</a>
+                    </li>
+                @endif
+
+                @if (Route::has('register'))
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('register') }}">登録</a>
+                    </li>
+                @endif
+            @else
+                <li class="nav-item dropdown">
+                    <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                        {{ Auth::user()->name }}
+                    </a>
+
+                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                        <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                            予約一覧
                        </a>
                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                            @csrf
                        </form>
-                   </li>
-                   <hr>
-                   <li class="nav-item mr-5">
-                       <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                    @if (  Auth::user()->paid_flg == 0)
+                        <a class="nav-link" href="{{ route('checkouts.index') }}" >
                            有料プラン登録
                        </a>
-                       <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                           @csrf
-                       </form>
-                   </li>
-                   <li class="nav-item mr-5">
-                       <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                           有料プラン解除
-                       </a>
-                       <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                           @csrf
-                       </form>
-                   </li>
-                   <hr>                  
-                   <li class="nav-item mr-5">
-                       <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                           ログアウト
-                       </a>
-                       <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                           @csrf
-                       </form>
-                   </li>
-
-               @endguest
+                    @else
+                    <form action="{{ route('checkouts.destroy', ['checkout' => 'aaa']) }}" method="POST" class="nav-link" style="display: inline;">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" style="background: none; border: none; color: inherit; cursor: pointer;">
+                            有料プラン解除
+                        </button>
+                    </form>
+                    @endif
+                        <a class="dropdown-item" href="{{ route('logout') }}"
+                            onclick="event.preventDefault();
+                                        document.getElementById('logout-form').submit();">
+                            ログアウト
+                        </a>
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                            @csrf
+                        </form>
+                    </div>
+                </li>
+            @endguest
            </ul>
        </div>
    </div>

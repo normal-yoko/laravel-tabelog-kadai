@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('name'); //名前
             $table->string('email')->unique(); //email
             $table->string('password'); //パスワード
+            $table->boolean('paid_flg')->default(0); //有料フラグ  0：無料 1：有料
             $table->string('postal_code')->default('');  //郵便番号
             $table->string('address');  //住所
             $table->string('phone')->default('');  //電話番号
