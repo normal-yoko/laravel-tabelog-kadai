@@ -12,15 +12,28 @@ class StoreController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //外部キーを使ってCategoryテーブルを連結したStoreテーブルを全件取得☆彡
-        
-//        $stores = Store::where('name',$request->input('keyword')::pagenate(9));
+        $keyword = $request->input('keyword');
+        $category = $request->input('category_id');
 
-      $stores = Store::paginate(8);
+        if($category !== null && $keyword !== null){
+            $stores = Store::where([['name','like','%'.$keyword.'%'],['category_id','=',$category]])->get();
+        }elseif($category == null && $keyword !== null){
+            $stores = Store::where('name','like','%'.$keyword.'%')->get();
+        }else if($category !== null && $keyword == null){
+            $stores = Store::where('category_id','=',$category)->get();
+        }else{
+            $stores = Store::all();
+        }
 
-        return view('stores.index', compact('stores'));
+        $categories = Category::all();
+
+//        $stores = Store::where('name','like','%'.$keyword.'%')->get();
+
+//      $stores = Store::paginate(8);
+
+        return view('stores.index', compact('stores','categories'));
     }
 
     /**

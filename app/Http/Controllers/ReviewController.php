@@ -11,10 +11,10 @@ use Illuminate\Http\Request;
 class ReviewController extends Controller
 {
 
-    public function index(Store $store)
+    public function index($id)
     {
-//        $reviews = $store->reviews()->get();
-        $reviews = $Store->reviews()-get();
+        $store = Store::find($id);
+        $reviews = $store->reviews()->get();
 
         return view('reviews.index', compact('reviews'));
     }
@@ -42,15 +42,15 @@ class ReviewController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($id)
+    public function show()
     {
 //        $reviews = $store->reviews()->get();
 //        $reviews = $store->reviews()->get();
 //            $reviews = Review::where("store_id",$id);
 //            $reviews = Review::find(1);
-        $reviews = Review::all();
+//        $reviews = Review::all();
         
-        return view('reviews.show', compact('id','reviews'));
+//        return view('reviews.show');
     }
 
     /**

@@ -11,8 +11,8 @@
    </tr>
    @foreach ($reviews as $review)
    <tr>
-       <td>{{ $review->comment }}</td>
-       <td>{{ str_repeat('*',$review->star_count) }}</td>
+       <td>{{ $review->user->name }}</td>
+       <td>{{ str_repeat('☆',$review->star_count) }}</td>
        <td>{{ $review->comment }}</td>
        <td>{{ $review->updated_at }}</td>
    </tr>

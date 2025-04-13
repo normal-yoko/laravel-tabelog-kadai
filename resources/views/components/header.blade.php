@@ -33,16 +33,43 @@
                    <li class="nav-item mr-5">
                        <a class="nav-link" href="{{ route('login') }}"><i class="fas fa-shopping-cart"></i></a>
                    </li>
-               @else
-                   <li class="nav-item mr-5">
-                       <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                           ログアウト
-                       </a>
 
+               @else
+                  <li class="nav-item mr-5">
+                       <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                           予約一覧
+                       </a>
                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                            @csrf
                        </form>
                    </li>
+                   <hr>
+                   <li class="nav-item mr-5">
+                       <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                           有料プラン登録
+                       </a>
+                       <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                           @csrf
+                       </form>
+                   </li>
+                   <li class="nav-item mr-5">
+                       <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                           有料プラン解除
+                       </a>
+                       <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                           @csrf
+                       </form>
+                   </li>
+                   <hr>                  
+                   <li class="nav-item mr-5">
+                       <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                           ログアウト
+                       </a>
+                       <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                           @csrf
+                       </form>
+                   </li>
+
                @endguest
            </ul>
        </div>

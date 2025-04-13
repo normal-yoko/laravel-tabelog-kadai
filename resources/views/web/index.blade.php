@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
 
-<form action="{{ route('stores.index') }}" method="POST" class="row g-1">
+<form action="{{ route('stores.index') }}" method="GET" class="row g-1">
 @csrf
   <div class="col-auto">
       <input class="form-control" name="keyword">

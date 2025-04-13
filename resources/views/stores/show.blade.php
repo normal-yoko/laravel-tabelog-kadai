@@ -61,7 +61,7 @@
        {{ $store->closed_day }}
     </div>
     <div>
-        <a href="{{ route('reviews.show',$store->id) }}">レビューをみる</a>
+        <a href="{{ route('reviews.index',$store->id) }}">レビューをみる</a>
     </div>
     <div class="col-5">
         @if(Auth::user()->favorite_stores()->where('store_id', $store->id)->exists())

@@ -5,6 +5,7 @@ use App\Http\Controllers\StoreController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\WebController;
+use App\Http\Controllers\CheckoutController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -38,14 +39,21 @@ require __DIR__.'/auth.php';
 //Route::resource('stores', StoreController::class);
 //Route::resource('reviews', ReviewController::class);
 
-Route::get('reviews',[ReviewController::class,'show'])->name('reviews.show');
-Route::post('reviews',[ReviewController::class,'show'])->name('reviews.show');
+//Route::get('reviews',[ReviewController::class,'show'])->name('reviews.show');
+//Route::post('reviews',[ReviewController::class,'show'])->name('reviews.show');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('stores', storeController::class);
-    Route::post('stores/{store}',[storeController::class,'index'])->name('store.index');
-    Route::post('reviews', [ReviewController::class, 'store'])->name('reviews.store');
+   // Route::GET('stores/{store}',[storeController::class,'index'])->name('store.index');
+    Route::get('/reviews/{id}', [ReviewController::class, 'index'])->name('reviews.index');
 
     Route::post('favorites/{store_id}', [FavoriteController::class, 'store'])->name('favorites.store');
     Route::delete('favorites/{store_id}', [FavoriteController::class, 'destroy'])->name('favorites.destroy');
+
+
+    Route::controller(CheckoutController::class)->group(function () {
+    Route::get('checkout', 'index')->name('checkout.index');
+    Route::post('checkout', 'store')->name('checkout.store');
+    Route::get('checkout/success', 'success')->name('checkout.success');
+    });   
 });
