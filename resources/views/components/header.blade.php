@@ -39,25 +39,33 @@
                     </a>
 
                     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                        <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                            予約一覧
-                       </a>
-                       <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                           @csrf
-                       </form>
-                    @if (  Auth::user()->paid_flg == 0)
-                        <a class="nav-link" href="{{ route('checkouts.index') }}" >
-                           有料プラン登録
-                       </a>
-                    @else
-                    <form action="{{ route('checkouts.destroy', ['checkout' => 'aaa']) }}" method="POST" class="nav-link" style="display: inline;">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" style="background: none; border: none; color: inherit; cursor: pointer;">
-                            有料プラン解除
-                        </button>
-                    </form>
-                    @endif
+                            <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                予約一覧
+                        </a>
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                            @csrf
+                        </form>
+                        @if (  Auth::user()->paid_flg == 0)
+                            <a class="nav-link" href="{{ route('checkouts.index') }}" >
+                            有料プラン登録
+                        </a>
+                        @else
+                        <form action="{{ route('checkouts.destroy', ['checkout' => 'aaa']) }}" method="POST" class="nav-link" style="display: inline;">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" style="background: none; border: none; color: inherit; cursor: pointer;">
+                                有料プラン解除
+                            </button>
+                        </form>
+                        @endif
+                        <a class="dropdown-item" href="{{ route('edit') }}"
+                                onclick="event.preventDefault();
+                                            document.getElementById('user-edit-form').submit();">
+                                ユーザー情報の変更
+                        </a>
+                        <form id="user-edit-form" action="{{ route('edit') }}" method="POST" class="d-none">
+                            @csrf
+                        </form>
                         <a class="dropdown-item" href="{{ route('logout') }}"
                             onclick="event.preventDefault();
                                         document.getElementById('logout-form').submit();">

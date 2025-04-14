@@ -52,12 +52,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::post('favorites/{store_id}', [FavoriteController::class, 'store'])->name('favorites.store');
     Route::delete('favorites/{store_id}', [FavoriteController::class, 'destroy'])->name('favorites.destroy');
+    
     Route::controller(CheckoutController::class)->group(function () {
         Route::resource('checkouts', CheckoutController::class,['only'=>['index','destroy']]);
-//        Route::get('checkouts','index')->name('checkouts.index');
-//        Route::get('checkouts','destroy')->name('checkouts.destroy');
         Route::get('checkout/success', 'success')->name('checkout.success');
     });   
 });
+//        Route::get('checkouts','index')->name('checkouts.index');
+//        Route::get('checkouts','destroy')->name('checkouts.destroy');
 
 

@@ -55,4 +55,31 @@ class RegisteredUserController extends Controller
 //        return redirect(RouteServiceProvider::HOME);
         return redirect('/verify-email');
     }
+
+    public function edit()
+    {
+        $user = Auth::user();
+
+        return view('auth.edit',compact('user'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request)
+    {
+        $user = Auth::user();
+
+        $user->name = $request->input('name');
+        $user->email = $request->input('email');
+        $user->postal_code = $request->input('postal_code');
+        $user->address = $request->input('address');
+        $user->phone = $request->input('phone');
+        $user->password = $request->input('password');
+        
+
+        $user->update();
+
+        return to_route('stores.index');
+    }
 }
