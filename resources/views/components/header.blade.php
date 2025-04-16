@@ -39,12 +39,17 @@
                     </a>
 
                     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                            <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                         <a class="nav-link" href="{{ route('reserves.index') }}">
                                 予約一覧
                         </a>
-                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                            @csrf
-                        </form>
+                        <a class="nav-link" href="{{ route('favorites.index') }}" >
+                                お気に入り一覧
+                        </a>
+
+                        <a class="nav-link" href="{{ route('reviews.index') }}">
+                                投稿レビュー一覧
+                        </a>
+
                         @if (  Auth::user()->paid_flg == 0)
                             <a class="nav-link" href="{{ route('checkouts.index') }}" >
                             有料プラン登録

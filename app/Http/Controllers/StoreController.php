@@ -78,13 +78,14 @@ class StoreController extends Controller
      */
     public function show(Store $store)
     {
-        //外部キーを使ってCategoryテーブルを連結したStoreテーブルを再取得☆彡
-//        $store_foreign = Store::with('category')->where('id',$store->id);
-//        return view('stores.show', compact('store_foreign'));
-//        $store = Store::with('category')->where('id',$store->id);
-//        return view('stores.show', compact('store'));
-    return view('stores.show', compact('store'));
+        //このshow(Store $sotre)の書き方だとfavoriteの方から呼ぶときに
+        //使えないのでshow($id)に修正する。
+        
 
+//    return view('stores.show', compact('store'));
+        $reviews = $store->reviews()->get();
+
+        return view('stores.show', compact('store', 'reviews'));
     }
 
     /**

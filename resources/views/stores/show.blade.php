@@ -60,29 +60,25 @@
        <strong>定休日:</strong>
        {{ $store->closed_day }}
     </div>
-    <div>
-        <a href="{{ route('reviews.index',$store->id) }}">レビューをみる</a>
-    </div>
 
     @if (  Auth::user()->paid_flg == 1)
     <div>
         <a href="{{ route('reserves.index',$store->id) }}">予約</a>
     </div>    
-    <div class="col-5">
+    <div>
         @if(Auth::user()->favorite_stores()->where('store_id', $store->id)->exists())
-            <a href="{{ route('favorites.destroy', $store->id) }}" class="btn laravel-tabelog-kadai-favorite-button text-favorite w-100" onclick="event.preventDefault(); document.getElementById('favorites-destroy-form').submit();">
+            <a href="{{ route('favorites.destroy', $store->id) }}"  onclick="event.preventDefault(); document.getElementById('favorites-destroy-form').submit();">
                 <i class="fa fa-heart"></i>
                 お気に入り解除
             </a>
         @else
-            <a href="{{ route('favorites.store', $store->id) }}" class="btn laravel-tabelog-kadai-favorite-button2 text-favorite w-100" onclick="event.preventDefault(); document.getElementById('favorites-store-form').submit();">
+            <a href="{{ route('favorites.store', $store->id) }}" onclick="event.preventDefault(); document.getElementById('favorites-store-form').submit();">
                 <i class="fa fa-heart"></i>
                 お気に入り登録
             </a>
         @endif
     </div>
     @endif
-
 </form>
 <form id="favorites-destroy-form" action="{{ route('favorites.destroy', $store->id) }}" method="POST" class="d-none">
     @csrf
@@ -91,4 +87,46 @@
 <form id="favorites-store-form" action="{{ route('favorites.store', $store->id) }}" method="POST" class="d-none">
     @csrf
 </form>
+<br>       
+ <div>
+    <h4>レビュー</h4>
+ <!-- レビューを実装する箇所になります -->
+    <div>
+        @foreach($reviews as $review)
+        <div>
+        <label>【評価】　{{ str_repeat('☆',$review->star_count) }} 【投稿者】　{{$review->user->name}}  【投稿日時】　 {{$review->created_at}}</label>
+
+        <p>{{$review->comment}}</p>
+        </div>
+        @endforeach
+    </div><br />
+
+    @auth
+    <div>
+        <div>
+            <form method="POST" action="{{ route('reviews.store') }}">
+                @csrf
+                <h4>レビュー内容</h4>
+                <div class="col-auto">
+                    <select class="form-control" name="star_count">
+                        <option value="5" selected> ☆☆☆☆☆ </option>
+                        <option value="4" selected> ☆☆☆☆ </option>
+                        <option value="3" selected> ☆☆☆ </option>
+                        <option value="2" selected> ☆☆ </option>
+                        <option value="1" selected> ☆ </option>
+                        <option value="0" selected>  </option>
+                    </select>
+                </div>
+                @error('content')
+                    <strong>レビュー内容を入力してください</strong>
+                @enderror
+                <textarea name="comment" class="form-control m-2"></textarea>
+                <input type="hidden" name="store_id" value="{{$store->id}}">
+                <button type="submit" class="btn tabelog-submit-button ml-2">レビューを追加</button>
+            </form>
+        </div>
+    </div>
+    @endauth
+</div>
+
 @endsection

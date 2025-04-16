@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete(); //会員ID
             $table->foreignId('store_id')->constrained()->cascadeOnDelete(); //店舗ID
-            $table->string('reservation_date')->default(''); //予約日
+            $table->datetime('reservation_datetime')->default(''); //予約日時
             $table->integer('headcount')->unsigned(); //人数
             $table->timestamps();
         });

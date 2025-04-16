@@ -11,12 +11,12 @@ use Illuminate\Http\Request;
 class ReviewController extends Controller
 {
 
-    public function index($id)
+    public function index()
     {
-        $store = Store::find($id);
-        $reviews = $store->reviews()->get();
+        $user = Auth::user();
+        $reviews = $user->reviews()->get();
 
-        return view('reviews.index', compact('store','reviews'));
+        return view('reviews.index', compact('reviews'));
     }
 
     /**
@@ -25,12 +25,13 @@ class ReviewController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'content' => 'required'
+            'comment' => 'required'
         ]);
 
         $review = new Review();
-        $review->content = $request->input('content');
+        $review->comment = $request->input('comment');
         $review->store_id = $request->input('store_id');
+        $review->star_count = $request->input('star_count');
         $review->user_id = Auth::user()->id;
         $review->save();
 
@@ -53,12 +54,14 @@ class ReviewController extends Controller
 //        return view('reviews.show');
     }
 
+
     /**
      * Show the form for editing the specified resource.
      */
     public function edit(Review $review)
     {
         //
+        return view('reviews.edit',compact('review'));
     }
 
     /**
@@ -66,7 +69,13 @@ class ReviewController extends Controller
      */
     public function update(Request $request, Review $review)
     {
-        //
+        $review->comment = $request->input('comment');
+        $review->star_count = $request->input('star_count');
+
+        $review->update();
+
+        return to_route('reviews.index');
+
     }
 
     /**
@@ -77,6 +86,6 @@ class ReviewController extends Controller
          //
          $review->delete();
  
-         return to_route('stores.index');
-    }
+         return to_route('reviews.index');
+        }
 }
