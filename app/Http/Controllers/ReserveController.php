@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Reserve;
 use App\Models\Store;
 use App\Models\User;
+use Carbon\Carbon;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -25,9 +26,22 @@ class ReserveController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create($store_id)
     {
-        //
+
+    // デバッグ用ログ出力
+    \Log::info("Trying to find store with ID: {$store_id}");
+    
+    $store = Store::find($store_id);
+
+    if (!$store) {
+        \Log::error("Store with ID {$store_id} not found.");
+        abort(404, 'Store not found');
+    }
+
+        $current_date = Carbon::now();
+
+        return view('reserves.create',compact('store','current_date'));
     }
 
     /**
@@ -35,6 +49,24 @@ class ReserveController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'reservation_date' => 'required',
+            'reservation_time' => 'required',
+            'headcount' => 'required',
+        ]);
+
+        $reserve = new Reserve();
+        $reserve->user_id = Auth::user()->id;
+        $reserve->store_id = $request->input('store_id');
+        $reserve->reservation_date = $request->input('reservation_date');
+        $reserve->reservation_time = $request->input('reservation_time');
+        $reserve->headcount = $request->input('headcount');
+        $reserve->save();
+
+        return to_route('stores.index');
+
+
+
         //
     }
 

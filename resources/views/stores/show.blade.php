@@ -63,7 +63,7 @@
 
     @if (  Auth::user()->paid_flg == 1)
     <div>
-        <a href="{{ route('reserves.index',$store->id) }}">予約</a>
+        <a href="{{ route('reserves.create',$store->id) }}">予約</a>
     </div>    
     <div>
         @if(Auth::user()->favorite_stores()->where('store_id', $store->id)->exists())

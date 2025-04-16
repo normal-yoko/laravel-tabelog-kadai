@@ -28,7 +28,7 @@
                 @csrf
                 @method('GET')
                 <button type="submit" onclick="return ">編集</button>
-            </form>
+        </form>
         </td>
         </td>
         <td>
