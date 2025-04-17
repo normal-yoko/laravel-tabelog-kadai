@@ -7,9 +7,8 @@
 
 <h4>店舗名 ：  {{$store->name}} </h4>
 
-<form action="reserves.store" method="POST">
+<form action="{{route('reserves.store')}}" method="POST">
     @csrf
-    @method('GET')
 
     <input type="hidden" name="store_id", value="{{ $store->id }}">
 

@@ -24,12 +24,11 @@
        <td>{{ $review->comment }}</td>
        <td>{{ $review->updated_at }}</td>
        <td>
-       <form action="{{ route('reviews.edit', $review) }}" method="GET" style="display:inline;">
-                @csrf
-                @method('GET')
-                <button type="submit" onclick="return ">編集</button>
-        </form>
-        </td>
+        <form action="{{ route('reviews.edit', $review) }}" method="GET" style="display:inline;">
+                        @csrf
+                        @method('GET')
+                        <button type="submit" onclick="return ">編集</button>
+                </form>
         </td>
         <td>
         <form action="{{ route('reviews.destroy', $review) }}" method="POST" style="display:inline;">

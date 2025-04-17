@@ -27,7 +27,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('reserves', [ReserveController::class, 'index'])->name('reserves.index');
     Route::get('reserves/{store_id}',[ReserveController::class,'create'])->name('reserves.create')->where('id', '[0-9]+');
     Route::post('reserves', [ReserveController::class, 'store'])->name('reserves.store');
-    route::resource('reserves',ReserveController::class);
+//    Route::get('reserves/{id}', [ReserveController::class, 'edit'])->name('reserves.edit')->where('id', '[0-9]+');
+    Route::delete('reserves/{reserve}', [ReserveController::class, 'destroy'])->name('reserves.destroy');   
+    Route::resource('reserves', ReserveController::class, ['only'=>['edit','update']]);
    
     Route::resource('stores', storeController::class);
     Route::get('favorites}', [FavoriteController::class, 'index'])->name('favorites.index');
