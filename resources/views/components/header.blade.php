@@ -1,22 +1,8 @@
 <nav class="navbar navbar-expand-md navbar-light shadow-sm larabel-tabelog-kadai-header-container">
    <div class="container">
        <a class="navbar-brand" href="{{ url('/') }}">
-<!--           {{ config('app.name', 'Laravel') }}  -->
                   <img src="{{asset('img/icon.jpg')}}">
        </a>
- <!--  <form class="row g-1">
-           <div class="col-auto">
-               <input class="form-control larabel-tabelog-kadai-header-search-input">
-           </div>
-           <div class="col-auto">
-               <button type="submit" class="btn larabel-tabelog-kadai-header-search-button"><i class="fas fa-search larabel-tabelog-kadai-header-search-icon"></i></button>
-           </div>
-       </form>
-
-       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-           <span class="navbar-toggler-icon"></span>
-       </button>
--->
        <div class="collapse navbar-collapse" id="navbarSupportedContent">
            <ul class="navbar-nav ms-auto mr-5 mt-2">
 
@@ -39,7 +25,13 @@
                     </a>
 
                     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                         <a class="nav-link" href="{{ route('reserves.index') }}">
+
+                    @if (  Auth::user()->paid_flg == 0)
+                            <a class="nav-link" href="{{ route('checkouts.index') }}" >
+                            有料プラン登録
+                        </a>
+                    @else
+                        <a class="nav-link" href="{{ route('reserves.index') }}">
                                 予約一覧
                         </a>
                         <a class="nav-link" href="{{ route('favorites.index') }}" >
@@ -49,12 +41,9 @@
                         <a class="nav-link" href="{{ route('reviews.index') }}">
                                 投稿レビュー一覧
                         </a>
-
-                        @if (  Auth::user()->paid_flg == 0)
-                            <a class="nav-link" href="{{ route('checkouts.index') }}" >
-                            有料プラン登録
+                        <a class="dropdown-item" href="{{ route('checkout.updateCard') }}">
+                                カード情報の変更
                         </a>
-                        @else
                         <form action="{{ route('checkouts.destroy', ['checkout' => 'aaa']) }}" method="POST" class="nav-link" style="display: inline;">
                             @csrf
                             @method('DELETE')
@@ -65,7 +54,7 @@
                         @endif
                         <a class="dropdown-item" href="{{ route('edit') }}"
                                 onclick="event.preventDefault();
-                                            document.getElementById('user-edit-form').submit();">
+                                document.getElementById('user-edit-form').submit();">
                                 ユーザー情報の変更
                         </a>
                         <form id="user-edit-form" action="{{ route('edit') }}" method="POST" class="d-none">

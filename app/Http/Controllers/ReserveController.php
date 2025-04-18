@@ -19,7 +19,7 @@ class ReserveController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $reserves = $user->reserves()->get();
+        $reserves = Reserve::orderBy('reservation_date', 'asc')->get();
         $current_date = Carbon::now();
 
         return view('reserves.index', compact('reserves','current_date'));
@@ -31,9 +31,6 @@ class ReserveController extends Controller
     public function create($store_id)
     {
 
-    // デバッグ用ログ出力
-    \Log::info("Trying to find store with ID: {$store_id}");
-    
     $store = Store::find($store_id);
 
     if (!$store) {
@@ -91,22 +88,6 @@ class ReserveController extends Controller
     /**
      * Update the specified resource in storage.
      */
- /*   public function update(Request $request, Reserve $reserve)
-    {
-        $request->validate([
-            'reservation_date' => 'required|date',
-            'reservation_time' => 'required',
-            'headcount' => 'required|integer',
-        ]);
-    
-        $reserve->reservation_date = $request->input('reservation_date');
-        $reserve->reservation_time = $request->input('reservation_time');
-        $reserve->headcount = $request->input('headcount');
-        $reserve->save();
-    
-        return to_route('reserves.index');
-    }
-        */
         public function update(Request $request, Reserve $reserve)
         {
             // リクエストデータをログに記録
@@ -121,25 +102,11 @@ class ReserveController extends Controller
         
             $reserve2 = Reserve::find($request->id);
 
-            // フォームバリデーション後のデータをログ
-            Log::info('Validated Data: ', $validatedData);
-        
-            // 変更前のデータをログに記録
-            Log::info('Before Update: ', $reserve2->toArray());
-        
             $reserve2->reservation_date = $validatedData['reservation_date'];
             $reserve2->reservation_time = $validatedData['reservation_time'];
             $reserve2->headcount = $validatedData['headcount'];
-            
-            // 変更後のデータをログに記録
-            Log::info('After Update Data: ', $reserve2->toArray());
-        
-            if ($reserve2->update()) {
-                Log::info('Reservation updated successfully.');
-            } else {
-                Log::error('Failed to update reservation.');
-            }
-        
+            $reserve2->update();
+      
             return to_route('reserves.index');
         }   
 
@@ -153,17 +120,4 @@ class ReserveController extends Controller
          $reserve->delete();
          return to_route('reserves.index');
      }
-
-
-/*
-    public function destroy(Reserve $reserve)
-    {
-        if (!$reserve) {
-            \Log::error("Store with ID {$reserve} not found.");
-            abort(404, 'reseerve not found');
-        }
-        $reserve->delete();
-      return to_route('reserves.index');
-    }
-      */
 }

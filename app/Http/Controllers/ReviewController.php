@@ -14,8 +14,7 @@ class ReviewController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $reviews = $user->reviews()->get();
-
+        $reviews = $user->reviews()->orderBy('updated_at', 'asc')->get();
         return view('reviews.index', compact('reviews'));
     }
 
