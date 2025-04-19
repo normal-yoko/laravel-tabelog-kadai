@@ -61,6 +61,7 @@
        <input type="text" name="closed_day" placeholder="第3月曜日">
    </div>
 
+   
    <div>
        <button type="submit">登録</button>
    </div>
