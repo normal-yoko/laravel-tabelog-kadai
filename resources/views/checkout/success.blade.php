@@ -11,6 +11,7 @@
            </p>
 
            
+
 -->
            <div class="text-center">
                <a href="{{ url('/') }}" class="btn samuraimart-submit-button w-75 text-white">トップページへ</a>
