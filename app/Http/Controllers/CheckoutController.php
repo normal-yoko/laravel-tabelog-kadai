@@ -15,6 +15,7 @@ class CheckoutController extends Controller
 {
     public function index()
     {
+        // StripeのAPIキーを設定
         Stripe::setApiKey(env('STRIPE_SECRET'));
     
         $user = Auth::user();
