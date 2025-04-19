@@ -9,6 +9,7 @@
            <p class="text-center lh-lg mb-5">
                商品が到着するまでしばらくお待ち下さい。
            </p>
+
            
 -->
            <div class="text-center">
