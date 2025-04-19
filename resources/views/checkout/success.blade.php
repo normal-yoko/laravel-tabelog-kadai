@@ -9,6 +9,7 @@
            <p class="text-center lh-lg mb-5">
                商品が到着するまでしばらくお待ち下さい。
            </p>
+           
 -->
            <div class="text-center">
                <a href="{{ url('/') }}" class="btn samuraimart-submit-button w-75 text-white">トップページへ</a>
