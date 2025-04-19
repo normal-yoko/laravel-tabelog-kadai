@@ -56,30 +56,33 @@ class RegisteredUserController extends Controller
         return redirect('/verify-email');
     }
 
+    // ユーザ情報の編集画面
     public function edit()
     {
         $user = Auth::user();
 
-        return view('auth.edit',compact('user'));
+        return view('auth.edit', compact('user'));
     }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request)
-    {
-        $user = Auth::user();
-
-        $user->name = $request->input('name');
-        $user->email = $request->input('email');
-        $user->postal_code = $request->input('postal_code');
-        $user->address = $request->input('address');
-        $user->phone = $request->input('phone');
-        $user->password = $request->input('password');
-        
-
-        $user->update();
-
-        return to_route('stores.index');
-    }
+        // ユーザ情報の更新
+        public function update(Request $request)
+        {
+            $request->validate([
+                'name' => ['required', 'string', 'max:255'],
+                'email' => ['required', 'string', 'email', 'max:255'],
+                'postal_code' => ['required', 'digits:7'],
+                'address' => ['required', 'max:30'],
+                'phone' => ['required', 'numeric', 'digits_between:10,11'],
+            ]);
+    
+            $user = Auth::user();
+            $user->name = $request->input('name');
+            $user->email = $request->input('email');
+            $user->postal_code = $request->input('postal_code');
+            $user->address = $request->input('address');
+            $user->phone = $request->input('phone');
+    
+            $user->save();
+    
+            return redirect()->route('stores.index')->with('status', 'ユーザ情報の変更は完了しました。');
+        }
 }

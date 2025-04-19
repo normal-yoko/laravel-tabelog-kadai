@@ -62,7 +62,7 @@ class ReserveController extends Controller
         $reserve->headcount = $request->input('headcount');
         $reserve->save();
 
-        return to_route('stores.index');
+        return to_route('stores.index')->with('status', '予約登録が完了しました。');
     }
 
     /**
@@ -107,7 +107,7 @@ class ReserveController extends Controller
             $reserve2->headcount = $validatedData['headcount'];
             $reserve2->update();
       
-            return to_route('reserves.index');
+            return to_route('reserves.index')->with('status', '予約情報の変更が完了しました。');
         }   
 
     /**
@@ -118,6 +118,6 @@ class ReserveController extends Controller
      {
          // Reserveモデルが正しく渡されていれば、削除処理を行います
          $reserve->delete();
-         return to_route('reserves.index');
+         return to_route('reserves.index')->with('status', '予約をキャンセルしました。');
      }
 }

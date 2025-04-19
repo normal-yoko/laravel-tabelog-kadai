@@ -34,7 +34,7 @@ class ReviewController extends Controller
         $review->user_id = Auth::user()->id;
         $review->save();
 
-        return back();
+        return back()->with('status', 'レビューを登録しました。');
 
 
     }
@@ -73,7 +73,7 @@ class ReviewController extends Controller
 
         $review->update();
 
-        return to_route('reviews.index');
+        return to_route('reviews.index')->with('status', 'レビュー内容を変更しました。');
 
     }
 
@@ -85,6 +85,6 @@ class ReviewController extends Controller
          //
          $review->delete();
  
-         return to_route('reviews.index');
+         return to_route('reviews.index')->with('status', 'レビューを削除しました。');
         }
 }

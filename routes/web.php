@@ -7,6 +7,7 @@ use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\WebController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\ReserveController;
+use App\Http\Controllers\Auth\PasswordController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +15,7 @@ Route::get('/',[WebController::class,'index'])->name('top');
 //Route::get('stores',[StoreController::class,'index'])->name('stores.index');
 Route::resource('stores', storeController::class);
 require __DIR__.'/auth.php';
+
 
 Route::middleware(['auth', 'verified'])->group(function () {
    // Route::GET('stores/{store}',[storeController::class,'index'])->name('store.index');
@@ -33,18 +35,24 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('reserves', ReserveController::class, ['only'=>['edit','update']]);
    
 //    Route::resource('stores', storeController::class);
-    Route::get('favorites}', [FavoriteController::class, 'index'])->name('favorites.index');
-
+    Route::get('favorites', [FavoriteController::class, 'index'])->name('favorites.index');
     Route::post('favorites/{store_id}', [FavoriteController::class, 'store'])->name('favorites.store');
     Route::delete('favorites/{store_id}', [FavoriteController::class, 'destroy'])->name('favorites.destroy');
-    
-    Route::controller(CheckoutController::class)->group(function () {
+
     Route::resource('checkouts', CheckoutController::class,['only'=>['index','destroy']]);
+
+    Route::controller(CheckoutController::class)->group(function () {
     Route::get('checkout/success', 'success')->name('checkout.success');
-    Route::get('/update-card', [CheckoutController::class, 'updateCard'])->name('checkout.updateCard');
-    Route::get('/update-card/success', [CheckoutController::class, 'updateCardSuccess'])->name('checkout.updateCard.success');
-
+    Route::get('/update-card', 'updateCard')->name('checkout.updateCard');
+    Route::get('/update-card/success','updateCardSuccess')->name('checkout.updateCard.success');
     });   
+
+    Route::get('/card', [CheckoutController::class, 'showCard'])->name('checkout.card');
+
+    Route::middleware(['auth'])->group(function () {
+        Route::get('/password/edit', [PasswordController::class, 'editPassword'])->name('password.edit');
+        Route::post('/password/update', [PasswordController::class, 'updatePassword'])->name('password.update');
+    });
+
+    
 });
-
-

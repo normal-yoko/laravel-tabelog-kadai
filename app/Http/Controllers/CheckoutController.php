@@ -43,11 +43,14 @@ class CheckoutController extends Controller
         ];
     
         $checkout_session = Session::create([
-            'customer' => $user->stripe_customer_id,  // カスタマーIDを使用
+            'customer' => $user->stripe_customer_id,
             'line_items' => $line_items,
             'mode' => 'payment',
             'success_url' => route('checkout.success'),
             'cancel_url' => route('stores.index'),
+            'payment_intent_data' => [
+                'setup_future_usage' => 'off_session', 
+            ],
         ]);
     
         return redirect($checkout_session->url);
@@ -55,12 +58,12 @@ class CheckoutController extends Controller
 
     public function success()
     {
-        $user_id = auth::user()->id;
+        $user_id = Auth::user()->id;
         $user = User::find($user_id);
         $user->paid_flg=true;
         $user->update();
 
-     return to_route('stores.index');
+     return to_route('stores.index')->with('status', '有料会員登録が完了しました。');
     }
 
     public function updateCard()
@@ -72,18 +75,53 @@ class CheckoutController extends Controller
             'mode' => 'setup', 
             'customer' => $user->stripe_customer_id,
             'payment_method_types' => ['card'], 
-            'success_url' => route('checkout.updateCard.success'),
+            'success_url' => route('checkout.updateCard.success') . '?session_id={CHECKOUT_SESSION_ID}',
             'cancel_url' => route('stores.index'),
         ]);
     
         return redirect($session->url);
     }
-    
-    public function updateCardSuccess()
-    {
-        // 特にDB変更不要。Stripe側で支払い方法が更新される
-        return redirect()->route('stores.index')->with('message', 'カード情報を更新しました');
+
+    public function updateCardSuccess(Request $request)
+{
+    Stripe::setApiKey(env('STRIPE_SECRET'));
+
+    // セッションIDを取得
+    $session_id = $request->get('session_id');
+    if (!$session_id) {
+        return redirect()->route('stores.index')->with('error', 'セッションIDが正しくありません。');
     }
+
+    try {
+        // セッションを取得
+        $session = \Stripe\Checkout\Session::retrieve($session_id);
+
+        // setup_intent を取得
+        $setupIntent = \Stripe\SetupIntent::retrieve($session->setup_intent);
+
+        // setup_intent から支払い方法のIDを取得
+        $paymentMethodId = $setupIntent->payment_method;
+
+        // 支払い方法を顧客に関連付け
+        $paymentMethod = \Stripe\PaymentMethod::retrieve($paymentMethodId); // 支払い方法を取得
+        $paymentMethod->attach(['customer' => $session->customer]); // 顧客に関連付け
+
+        // 支払い方法をデフォルトに設定することもできます
+        \Stripe\Customer::update(
+            $session->customer,
+            ['invoice_settings' => ['default_payment_method' => $paymentMethodId]]
+        );
+
+        // メッセージを表示して、リダイレクト
+        return redirect()->route('stores.index')->with('status  ', 'カード情報を更新しました');
+    } catch (\Exception $e) {
+        \Log::error('Error during payment method attach: ' . $e->getMessage());
+        return redirect()->route('stores.index')->with('error', 'カード情報の更新中にエラーが発生しました。');
+    }
+}
+
+    
+    
 
     public function destroy()
     {
@@ -121,7 +159,31 @@ class CheckoutController extends Controller
             'stripe_customer_id' => null,
         ]);
     
-        return redirect()->route('stores.index')->with('message', '有料会員を解約し、カード情報も削除しました。');
+        return redirect()->route('stores.index')->with('status', '有料会員を解約し、カード情報も削除しました。');
+    }
+ 
+    public function showCard()
+    {
+        Stripe::setApiKey(env('STRIPE_SECRET'));
+        $user = Auth::user();
+        
+        try {
+            $paymentMethods = \Stripe\PaymentMethod::all([
+                'customer' => $user->stripe_customer_id,
+                'type' => 'card',
+            ]);
+            
+            \Log::info('Payment Methods:', ['payment_methods' => $paymentMethods]);  // ここでログを確認
+    
+            $card = count($paymentMethods->data) > 0 ? $paymentMethods->data[0] : null;
+            
+            return view('checkout.card', [
+                'card' => $card,
+            ]);
+        } catch (\Exception $e) {
+            \Log::error('Error retrieving card info: ' . $e->getMessage());
+            return redirect()->route('stores.index')->with('error', 'カード情報の取得に失敗しました。');
+        }
     }
     
 }

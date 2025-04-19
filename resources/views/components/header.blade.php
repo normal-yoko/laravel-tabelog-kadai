@@ -41,8 +41,8 @@
                         <a class="nav-link" href="{{ route('reviews.index') }}">
                                 投稿レビュー一覧
                         </a>
-                        <a class="dropdown-item" href="{{ route('checkout.updateCard') }}">
-                                カード情報の変更
+                        <a class="dropdown-item" href="{{ route('checkout.card') }}">
+                                カード情報を表示
                         </a>
                         <form action="{{ route('checkouts.destroy', ['checkout' => 'aaa']) }}" method="POST" class="nav-link" style="display: inline;">
                             @csrf
@@ -60,6 +60,15 @@
                         <form id="user-edit-form" action="{{ route('edit') }}" method="POST" class="d-none">
                             @csrf
                         </form>
+
+                        <a class="dropdown-item" href="{{ route('password.edit') }}"
+                            onclick="event.preventDefault();
+                            document.getElementById('password-edit-form').submit();">
+                            パスワードの変更
+                        </a>
+                        <form id="password-edit-form" action="{{ route('password.edit') }}" method="GET" class="d-none">
+                        </form>
+
                         <a class="dropdown-item" href="{{ route('logout') }}"
                             onclick="event.preventDefault();
                                         document.getElementById('logout-form').submit();">

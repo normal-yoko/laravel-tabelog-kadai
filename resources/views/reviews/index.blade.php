@@ -1,6 +1,12 @@
 @extends('layouts.app')
 
 @section('content')
+@if(session('status'))
+    <div class="alert alert-success">
+        {{ session('status') }}
+    </div>
+@endif
+
 <div class="container py-5">
     <h2 class="fw-bold text-center mb-4" style="font-family: 'Comic Sans MS', cursive, sans-serif; color: #4CAF50;">レビュー一覧</h2>
 

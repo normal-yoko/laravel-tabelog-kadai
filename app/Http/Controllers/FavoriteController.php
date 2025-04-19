@@ -25,13 +25,13 @@ class FavoriteController extends Controller
     {
         Auth::user()->favorite_stores()->attach($store_id);
 
-        return back();
+        return back()->with('status', 'お気に入りに登録しました。');
     }
 
     public function destroy($store_id)
     {
         Auth::user()->favorite_stores()->detach($store_id);
 
-        return back();
+        return back()->with('status', 'お気に入り登録を解除しました。');
     }
 }

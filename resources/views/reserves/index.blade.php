@@ -1,6 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
+@if(session('status'))
+    <div class="alert alert-success">
+        {{ session('status') }}
+    </div>
+@endif
 <div class="container py-5">
     <h2 class="fw-bold text-center mb-4">予約一覧</h2>
     <table class="table table-striped table-bordered table-hover">

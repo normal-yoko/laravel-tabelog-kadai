@@ -2,6 +2,12 @@
 
 @section('content')
 
+@if(session('status'))
+    <div class="alert alert-success">
+        {{ session('status') }}
+    </div>
+@endif
+
 <form action="{{ route('stores.index') }}" method="GET" class="row g-1">
 @csrf
     <div class="d-flex justify-content-center mb-5">
