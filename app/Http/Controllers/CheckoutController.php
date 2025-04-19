@@ -85,7 +85,7 @@ class CheckoutController extends Controller
 
     public function updateCardSuccess(Request $request)
 {
-    Stripe::setApiKey(env('STRIPE_SECRET'));
+  Stripe::setApiKey(env('STRIPE_SECRET'));
 
     // セッションIDを取得
     $session_id = $request->get('session_id');
@@ -127,6 +127,7 @@ class CheckoutController extends Controller
     public function destroy()
     {
         $user = Auth::user();
+
         Stripe::setApiKey(env('STRIPE_SECRET'));
     
         if ($user->stripe_customer_id) {
@@ -165,7 +166,9 @@ class CheckoutController extends Controller
  
     public function showCard()
     {
+
         Stripe::setApiKey(env('STRIPE_SECRET'));
+
         $user = Auth::user();
         
         try {
